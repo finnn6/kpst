@@ -1,0 +1,3 @@
+web = http://localhost:8008/database/jsp/emp/파일명.jsp
+web = http://localhost:8008/database/jsp/study/파일명.jsp
+web = http://localhost:8008/database/jsp/keyword/파일명.jsp
