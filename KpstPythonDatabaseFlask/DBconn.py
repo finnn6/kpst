@@ -79,15 +79,17 @@ def getAllEmp(sql):
         cursor = conn.cursor()
         cursor.execute(sql)
         resultList = cursor.fetchall()
+        resultrow = dict()
         for result in resultList:
-            EMP_ID = result[0]
-            PWD = result[1]
-            NAME = result[2]
-            BIR = result[3]
-            PH = result[4]
-            INTROD_ID = result[5]
-            info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID, PWD, NAME, BIR, PH, INTROD_ID)
-            print(info)
+            resultrow["EMP_ID"]= result[0]
+            resultrow["PWD"] = result[1]
+            resultrow["NAME"] = result[2]
+            resultrow["BIR"] = result[3]
+            resultrow["PH"] = result[4]
+            resultrow["INTROD_ID"] = result[5]
+        print(resultrow)
+        json_val = json.dumps(resultrow, ensure_ascii=False)
+        return json_val
     except mysql.connector.Error as err:
 
         print(err)
@@ -102,12 +104,12 @@ def getKeywordRank(sql):
         total = cursor.execute(sql)
         rere = cursor.fetchall()
         print(rere)
-        # print(total)
+
     except mysql.connector.Error as err:
         print(err)
     index = 0
     dictresult = dict()
-    str =  []
+    str = []
     for result in rere:
         resultrow = dict()
         index+=1
@@ -115,8 +117,7 @@ def getKeywordRank(sql):
         resultrow["SEARCH_WORD"] = result[1]
         resultrow["SEARCH_CNT"] = result[2]
         str.append(resultrow)
-    # with open('file.txt', 'w', encoding='UTF-8') as file:
-    #     json_val= file.write(json.dumps(str))
+
     json_val = json.dumps(str, ensure_ascii=False)
     print(str)
     print(json_val)
@@ -129,23 +130,14 @@ def increaseKeywordCnt(sql):
         cursor = conn.cursor()
         sql
         total = cursor.execute(sql)
+        conn.commit()
         rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]        print(rere)
-        print(total)
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        json_val = json.dumps(rere, ensure_ascii=False)
+        return json_val
     except mysql.connector.Error as err:
-
         print(err)
+
+
 
 def insertKeyword(sql):
     try:
@@ -154,21 +146,11 @@ def insertKeyword(sql):
         cursor = conn.cursor()
         sql
         total = cursor.execute(sql)
+        conn.commit()
         rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        json_val = json.dumps(rere, ensure_ascii=False)
+        return json_val
     except mysql.connector.Error as err:
-
         print(err)
 
 def searchKeyword(sql):
@@ -180,19 +162,17 @@ def searchKeyword(sql):
         total = cursor.execute(sql)
         rere = cursor.fetchall()
         print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
-    except mysql.connector.Error as err:
 
+        index = 0
+        dictresult = dict()
+        for result in rere:
+            resultrow = dict()
+            index += 1
+            dictresult["SEARCH_WORD"] = result[0]
+        json_val = json.dumps(dictresult, ensure_ascii=False)
+        print(json_val)
+        return json_val
+    except mysql.connector.Error as err:
         print(err)
 
 def getRecentStudyTime(sql):
@@ -205,16 +185,17 @@ def getRecentStudyTime(sql):
         rere = cursor.fetchall()
         print(rere)
         print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        index = 0
+        dictresult = dict()
+        for result in rere:
+            dictresult["STD_START"] = result[0]
+            dictresult["STD_END"] = result[1]
+            dictresult["SUB_NAME"] = result[2]
+
+        json_val = json.dumps(dictresult, ensure_ascii=False)
+        print(str)
+        print(json_val)
+        return json_val
     except mysql.connector.Error as err:
 
         print(err)
@@ -229,18 +210,18 @@ def getTodayStudyTime(sql):
         rere = cursor.fetchall()
         print(rere)
         print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        str = []
+        for result in rere:
+            dictresultrow = dict()
+            dictresultrow["STD_START"] = result[0]
+            dictresultrow["STD_END"] = result[1]
+            dictresultrow["SUB_NAME"] = result[2]
+            str.append(dictresultrow)
+        json_val = json.dumps(str, ensure_ascii=False)
+        print(str)
+        print(json_val)
+        return json_val
     except mysql.connector.Error as err:
-
         print(err)
 
 def insertStudyEndTime(sql):
@@ -251,20 +232,12 @@ def insertStudyEndTime(sql):
         sql
         total = cursor.execute(sql)
         rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
-    except mysql.connector.Error as err:
+        conn.commit()
+        rere = cursor.fetchall()
+        json_val = json.dumps(rere, ensure_ascii=False)
+        return json_val
 
+    except mysql.connector.Error as err:
         print(err)
 
 def insertStudyStartTime(sql):
@@ -274,19 +247,10 @@ def insertStudyStartTime(sql):
         cursor = conn.cursor()
         sql
         total = cursor.execute(sql)
+        conn.commit()
         rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        json_val = json.dumps(rere, ensure_ascii=False)
+        return json_val
     except mysql.connector.Error as err:
 
         print(err)
@@ -301,18 +265,20 @@ def selectAllStudyTime(sql):
         rere = cursor.fetchall()
         print(rere)
         print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        index = 0
+        dictresult = dict()
+        str = []
+        for result in rere:
+            dictresultrow = dict()
+            dictresultrow["STD_START"] = result[0]
+            dictresultrow["STD_END"] = result[1]
+            dictresultrow["SUB_NAME"] = result[2]
+            str.append(dictresultrow)
+        json_val = json.dumps(str, ensure_ascii=False)
+        print(str)
+        print(json_val)
+        return json_val
     except mysql.connector.Error as err:
-
         print(err)
 
 def studyStatus(sql):
@@ -325,16 +291,17 @@ def studyStatus(sql):
         rere = cursor.fetchall()
         print(rere)
         print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        dictresult = dict()
+        for result in rere:
+            dictresult["STUDY_STATUS"] = result[0]
+            if(result[0]==0):
+                print("ON")
+
+            elif(result[0]!=0):
+                print("OFF")
+        json_val = json.dumps(dictresult, ensure_ascii=False)
+        print(json_val)
+        return json_val
     except mysql.connector.Error as err:
 
         print(err)
