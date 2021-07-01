@@ -1,5 +1,5 @@
 import mysql.connector
-
+import json
 config = {
     "user": "study_lim",
     "password": "123123",
@@ -93,28 +93,34 @@ def getAllEmp(sql):
         print(err)
 
 def getKeywordRank(sql):
+
     try:
+        print(sql)
         conn = mysql.connector.connect(**config)
-        print(conn)
+        # print(conn)
         cursor = conn.cursor()
-        sql
         total = cursor.execute(sql)
         rere = cursor.fetchall()
         print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        # print(total)
     except mysql.connector.Error as err:
-
         print(err)
+    index = 0
+    dictresult = dict()
+    str =  []
+    for result in rere:
+        resultrow = dict()
+        index+=1
+        resultrow["RANK"] = index
+        resultrow["SEARCH_WORD"] = result[1]
+        resultrow["SEARCH_CNT"] = result[2]
+        str.append(resultrow)
+    # with open('file.txt', 'w', encoding='UTF-8') as file:
+    #     json_val= file.write(json.dumps(str))
+    json_val = json.dumps(str, ensure_ascii=False)
+    print(str)
+    print(json_val)
+    return json_val
 
 def increaseKeywordCnt(sql):
     try:

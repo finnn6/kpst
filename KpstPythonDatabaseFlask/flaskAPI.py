@@ -1,6 +1,6 @@
 from flask import Flask, session, render_template, redirect, request, url_for
 
-import test
+import DBconn
 
 app = Flask(__name__)
 
@@ -13,8 +13,8 @@ def login():
     if request.method == 'GET':
         id = request.args.get("id")
         pwd = request.args.get("pwd")
-    test.logIn(sql="SELECT COUNT(EMP_ID)  FROM TBL_EMP te WHERE EMP_ID = '{}'and PWD ='{}';"
-               .format(id,pwd))
+    DBconn.logIn(sql="SELECT COUNT(EMP_ID)  FROM TBL_EMP te WHERE EMP_ID = '{}'and PWD ='{}';"
+                 .format(id,pwd))
     return "login"
 
 @app.route('/createEmp', methods=['GET','POST'])
@@ -28,7 +28,7 @@ def createEmp():
         rec = request.args.get("rec")
     sql = "INSERT into TBL_EMP values (%s,%s,%s,%s,%s,%s);"
     val = (id,pwd,name,birth,ph,rec)
-    test.createEmp(sql,val)
+    DBconn.createEmp(sql, val)
 
     return "createEmp"
 
@@ -36,8 +36,8 @@ def createEmp():
 def chekid():
     if request.method == 'GET':
         id = request.args.get("id")
-    test.checkid(sql="select  EMP_ID  from TBL_EMP te where EMP_ID = '{}';"
-                 .format(id))
+    DBconn.checkid(sql="select  EMP_ID  from TBL_EMP te where EMP_ID = '{}';"
+                   .format(id))
     return "chekid"
 #
 @app.route('/updateEmp', methods=['GET','POST'])
@@ -49,7 +49,7 @@ def updateEmp():
         ph = request.args.get("ph")
     sql = "UPDATE TBL_EMP SET PWD=%s,NAME=%s,PH=%s WHERE EMP_ID=%s;"
     val = (pwd,name,ph,id)
-    test.updateEmp(sql,val)
+    DBconn.updateEmp(sql, val)
     return "updateEmp"
 
 @app.route('/deleteEmp', methods=['GET','POST'])
@@ -59,7 +59,7 @@ def deleteEmp():
         pwd = request.args.get("pwd")
     sql = "DELETE FROM TBL_EMP WHERE EMP_ID = %s and PWD = %s;"
     val = (id,pwd)
-    test.deleteEmp(sql,val)
+    DBconn.deleteEmp(sql, val)
     return "deleteEmp"
 #
 @app.route('/getAllEmp', methods=['GET','POST'])
@@ -68,15 +68,23 @@ def getAllEmp():
         id = request.args.get("id")
     sql = "select * from TBL_EMP WHERE EMP_ID= '{}';".format(id)
     print(sql)
-    test.getAllEmp(sql)
+    DBconn.getAllEmp(sql)
     return "getAllEmp"
 #
 #
-# @app.route('/getKeywordRank')
-# def getKeywordRank():
-#
-#     return
-#
+@app.route('/getKeywordRank')
+def getKeywordRank():
+    sql = '''SELECT
+                    @rownum:=@rownum+1 
+                    ,SEARCH_WORD
+                    ,SEARCH_CNT
+                FROM
+                    TBL_VOICE_REC tvr
+                WHERE (SELECT @rownum:=0)=0
+                ORDER BY SEARCH_CNT DESC'''
+    result = DBconn.getKeywordRank(sql)
+    return result
+
 # @app.route('/increaseKeywordCnt')
 # def increaseKeywordCnt():
 #
