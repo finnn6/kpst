@@ -22,18 +22,19 @@ def logIn(sql):
     except mysql.connector.Error as err:
         print(err)
 
-def createEmp(sql1):
+def createEmp(sql,val):
     try:
-        conn1 = mysql.connector.connect(**config)
-        print(conn1)
-        cursor1 = conn1.cursor()
-        sql1
-        cursor1.execute(sql1)
-        rere1 = cursor1.fetchall()
-        print(rere1)
-        # print(total1)
-    except mysql.connector.Error as err1:
-        print(err1)
+        conn = mysql.connector.connect(**config)
+        print(conn)
+        cursor = conn.cursor()
+        cursor.execute(sql,val)
+        rere = cursor.fetchall()
+        conn.commit()
+        print(rere)
+        print(sql,val)
+        # print(total)
+    except mysql.connector.Error as err:
+        print(err)
 
 def checkid(sql):
     try:
@@ -41,45 +42,34 @@ def checkid(sql):
         print(conn)
         cursor = conn.cursor()
         sql
+        print(sql)
         total = cursor.execute(sql)
-        rere = cursor.fetchall()
-        print(rere)
+
         print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+
     except mysql.connector.Error as err:
         print(err)
 
-def updateEmp(sql):
+def updateEmp(sql,val):
     try:
         conn = mysql.connector.connect(**config)
-        print(conn)
         cursor = conn.cursor()
-        sql
-        total = cursor.execute(sql)
-        rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        cursor.execute(sql,val)
+        # cursor.fetchall()
+        print(sql,val)
+        conn.commit()
     except mysql.connector.Error as err:
+        print(err)
 
+def deleteEmp(sql,val):
+    try:
+        conn = mysql.connector.connect(**config)
+        cursor = conn.cursor()
+        cursor.execute(sql,val)
+        # cursor.fetchall()
+        print(sql,val)
+        conn.commit()
+    except mysql.connector.Error as err:
         print(err)
 
 def getAllEmp(sql):
@@ -87,21 +77,17 @@ def getAllEmp(sql):
         conn = mysql.connector.connect(**config)
         print(conn)
         cursor = conn.cursor()
-        sql
-        total = cursor.execute(sql)
-        rere = cursor.fetchall()
-        print(rere)
-        print(total)
-    # for result in resultList:
-    #     EMP_ID = result[0]
-    #     PWD = result[1]
-    #     NAME = result[2]
-    #     BIR = result[3]
-    #     PH = result[4]
-    #     INTROD_ID = result[5]
-    #     info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID,PWD,NAME,BIR,PH,INTROD_ID)
-    #
-    #     print(info)
+        cursor.execute(sql)
+        resultList = cursor.fetchall()
+        for result in resultList:
+            EMP_ID = result[0]
+            PWD = result[1]
+            NAME = result[2]
+            BIR = result[3]
+            PH = result[4]
+            INTROD_ID = result[5]
+            info = "EMP_ID:{},PWD:{},NAME:{},BIR:{},PH{},INTROD_ID{}".format(EMP_ID, PWD, NAME, BIR, PH, INTROD_ID)
+            print(info)
     except mysql.connector.Error as err:
 
         print(err)
@@ -141,7 +127,8 @@ def increaseKeywordCnt(sql):
         print(rere)
         print(total)
     # for result in resultList:
-    #     EMP_ID = result[0]
+    #     EMP_ID = result[0]        print(rere)
+        print(total)
     #     PWD = result[1]
     #     NAME = result[2]
     #     BIR = result[3]
