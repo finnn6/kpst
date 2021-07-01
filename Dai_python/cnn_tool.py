@@ -91,7 +91,6 @@ def loading_rdata(data_path, eng=True, num=True, punc=False):
             content = normalize(doc[0], alphabet=eng, number=num, punctuation=punc)
             # content = normalize(doc[0], number=num, punctuation=punc)
             contents.append(content)
-            print(doc)
             points.append(doc[1])
         if idx % 100000 is 0:
             print('%d docs / %d save' % (idx, len(contents)))
