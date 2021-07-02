@@ -15,6 +15,7 @@ def board_view(article_idx):
 @app.route('/boards',defaults={'page':'index'})
 @app.route('/boards/<page>')
 def boards(page):
+    print("현우")
     return page+"페이지입니다."
 
 app.run(host="localhost",port=5001)
